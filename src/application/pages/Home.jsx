@@ -1,49 +1,59 @@
-import { Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
 import * as cpuApi from '../../api/cpuApi';
+import { fetchCpus, selectCpu } from "../../store/slice/cpus";
 
 export default function Home() {
 
-    const [cpus, setCpus] = useState([]);
+    const dispatch = useDispatch()
+    const cpus = useSelector((state) => state.cpu.cpus)
+    const navigate = useNavigate()
 
     useEffect(() => {
-        fetchCpus();
+        handleFetchCpus()
     }, [])
 
-    const fetchCpus = async () => {
-        let resp = await cpuApi.getCpus();
-        setCpus(resp);
+    const handleFetchCpus = async () => {
+        let resp = await cpuApi.getCpus()
+        dispatch(fetchCpus(resp))
     }
 
     const handleSelectCpu = (cpu) => {
-
-     }
+        dispatch(selectCpu(cpu))
+        navigate('/edit')
+    }
 
     return (
-        <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <Typography variant="h3" align={'center'}>Avaliable Cpu List</Typography>
+        <Grid container>
+            <Grid mt={4} direction={'row'} justifyContent={'center'} alignItems={'center'} container>
+                <Grid className="header__title" item xs={4}>
+                    <Typography variant="h3" align={'center'}>Available CPU List</Typography>
+                </Grid>
             </Grid>
-            <Grid mt={4} direction={'row'} justifyContent={'center'} alignItems={'center'} container >
+            <Grid mt={4} direction={'row'} justifyContent={'center'} alignItems={'center'} container>
                 <Table sx={{ maxWidth: 650 }} aria-label="simple table">
                     <TableHead>
-                        <TableRow style={{backgroundColor: 'gray'}}>
+                        <TableRow style={{ backgroundColor: 'gray' }}>
                             <TableCell>Brand</TableCell>
                             <TableCell>Model</TableCell>
                             <TableCell>Socket</TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
+                    <TableBody >
                         {cpus.map((cpu) => (
                             <TableRow hover
+                                className="table__body"
                                 key={cpu.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                onClick={e => handleSelectCpu(cpu)}
                             >
                                 <TableCell component="th" scope="row">
                                     {cpu.brand}
                                 </TableCell>
                                 <TableCell>{cpu.model}</TableCell>
-                                <TableCell>{cpu.socket}</TableCell>
+                                <TableCell>{cpu.socket.name}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
