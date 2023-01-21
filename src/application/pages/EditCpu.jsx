@@ -67,13 +67,11 @@ export const EditCpu = () => {
 
     const handleEdit = async() => {
         let resp = await cpuApi.edit(cpu);
-        alert(resp);
         navigate('/');
     }
 
     const handleDelete = async() => {
         let resp = await cpuApi.deleteCpu(id);
-        alert(resp);
         navigate('/')
     }
 
@@ -107,7 +105,7 @@ export const EditCpu = () => {
                                     <Button variant="contained" onClick={e => setEdit(true)}>Edit</Button>
                                 </Grid>
                                 <Grid item xs={1} marginRight={17}>
-                                    <Button color="error" variant="contained" onClick={e => setEdit(true)}>Delete</Button>
+                                    <Button color="error" variant="contained" onClick={e => handleClickOpen()}>Delete</Button>
                                 </Grid>
                             </>
                     }
@@ -146,7 +144,7 @@ export const EditCpu = () => {
                             <TextField name="socket" value={cpu ? cpu.socket.name : ''} required label="Socket" disabled />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField name="clockSpeed" value={cpu ? cpu.clockSpeed : ''} type={'number'} required label="Clock Speed" disabled={!edit} />
+                            <TextField onChange={e => handleChange(e)} name="clockSpeed" value={cpu ? cpu.clockSpeed : ''} type={'number'} required label="Clock Speed" disabled={!edit} />
                         </Grid>
                     </Grid>
                     <Grid item xs={12} container mt={2}>

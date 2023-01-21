@@ -43,18 +43,23 @@ export default function Home() {
                     </TableHead>
                     <TableBody >
                         {cpus.map((cpu) => (
-                            <TableRow hover
-                                className="table__body"
-                                key={cpu.id}
-                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                onClick={e => handleSelectCpu(cpu)}
-                            >
-                                <TableCell component="th" scope="row">
-                                    {cpu.brand}
-                                </TableCell>
-                                <TableCell>{cpu.model}</TableCell>
-                                <TableCell>{cpu.socket.name}</TableCell>
-                            </TableRow>
+                            cpu.deleted === false ?
+                                <>
+                                    <TableRow hover
+                                        className="table__body"
+                                        key={cpu.id}
+                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        onClick={e => handleSelectCpu(cpu)}
+                                    >
+                                        <TableCell component="th" scope="row">
+                                            {cpu.brand}
+                                        </TableCell>
+                                        <TableCell>{cpu.model}</TableCell>
+                                        <TableCell>{cpu.socket.name}</TableCell>
+                                    </TableRow>
+                                </>
+                                :
+                                ""
                         ))}
                     </TableBody>
                 </Table>
