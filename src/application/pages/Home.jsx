@@ -1,7 +1,7 @@
-import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as cpuApi from '../../api/cpuApi';
 import { fetchCpus, selectCpu } from "../../store/slice/cpus";
 
@@ -16,13 +16,13 @@ export default function Home() {
     }, [])
 
     const handleFetchCpus = async () => {
-        let resp = await cpuApi.getCpus()
+        let resp = await cpuApi.getAll()
         dispatch(fetchCpus(resp))
     }
 
     const handleSelectCpu = (cpu) => {
         dispatch(selectCpu(cpu))
-        navigate('/edit')
+        navigate('/edit/' + cpu.id)
     }
 
     return (

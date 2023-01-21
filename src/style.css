@@ -5,3 +5,7 @@
 .table__body {
     background-color: rgba(37, 175, 255, 0.76);
 }
+
+.grid__paper {
+    min-height: 430px;
+}
